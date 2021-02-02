@@ -1,5 +1,6 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
+import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {interval, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-clock',
@@ -7,17 +8,18 @@ import {Observable} from 'rxjs';
   styleUrls: ['./clock.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ClockComponent implements OnInit {
-
-  time = new Observable<Date>(observer => {
-    setInterval(() => {
-      observer.next(new Date());
-    }, 1000);
-  });
+export class ClockComponent implements OnInit, OnDestroy {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  time$ = interval(1000).pipe(map((v, i) => new Date()));
+
+
+  ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+  }
 
 
 }
